@@ -13,18 +13,16 @@
 mod config;
 mod db;
 mod handlers;
+mod middleware;
 mod models;
 mod routes;
-mod fixtures;
-mod middleware;
 
+use crate::middleware::logging::setup_middleware;
+use crate::models::status::start_background_metrics_task;
 use axum::Router;
 use std::net::SocketAddr;
 use tower_http::cors::CorsLayer;
 use tracing::info;
-use fixtures::run_fixtures;
-use crate::middleware::logging::setup_middleware;
-use crate::models::status::start_background_metrics_task;
 
 /// Point d'entrée principal de l'application.
 ///
@@ -35,9 +33,9 @@ use crate::models::status::start_background_metrics_task;
 /// 4. Démarre le serveur HTTP
 #[tokio::main]
 async fn main() {
-
     // Load configuration from config.toml
-    let config = config::Config::load(include_str!("../assets/config.toml")).expect("Failed to load configuration");
+    let config = config::Config::load(include_str!("../assets/config.toml"))
+        .expect("Failed to load configuration");
 
     // Initialize database
     let mut db = db::DatabaseManager::new();
@@ -46,7 +44,7 @@ async fn main() {
         .expect("Failed to connect to database");
 
     // Run fixtures
-    run_fixtures(db.get_pool(), true).await.expect("Failed to run fixtures");
+    //run_fixtures(db.get_pool(), true).await.expect("Failed to run fixtures");
 
     // Démarrer la tâche de calcul des métriques en arrière-plan
     start_background_metrics_task(db.clone(), config.clone()).await;

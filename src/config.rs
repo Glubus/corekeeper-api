@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 use tracing::{info, warn};
-use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
+use tracing_subscriber::{EnvFilter, layer::SubscriberExt, util::SubscriberInitExt};
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct ServerConfig {
@@ -56,11 +56,14 @@ impl Config {
         // Charger la configuration depuis le fichier TOML
         let config_content = path;
         let config = toml::from_str::<Config>(config_content)?;
-        
+
         // Initialiser le logging avec la configuration
         Self::init_logging(&config.logging.level, &config.logging.format);
 
-        info!("Configuration loaded successfully. Server will bind to: {}", config.server_address());
+        info!(
+            "Configuration loaded successfully. Server will bind to: {}",
+            config.server_address()
+        );
         Ok(config)
     }
 
@@ -99,10 +102,7 @@ impl Default for Config {
                     "DELETE".to_string(),
                     "OPTIONS".to_string(),
                 ],
-                allowed_headers: vec![
-                    "content-type".to_string(),
-                    "authorization".to_string(),
-                ],
+                allowed_headers: vec!["content-type".to_string(), "authorization".to_string()],
             },
         }
     }

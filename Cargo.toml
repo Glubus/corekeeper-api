@@ -40,7 +40,7 @@ tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
 chrono = { version = "0.4.34", features = ["serde"] }
 uuid = { version = "1.7", features = ["v4", "serde"] }
 rust_decimal = { version = "1.32", features = ["serde"] }
-bigdecimal = { version = "0.4.0", features = ["serde"] }
+bigdecimal = { version = "0.4.8" }
 
 # Validation
 validator = { version = "0.20", features = ["derive"] }
