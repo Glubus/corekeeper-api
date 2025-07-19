@@ -34,4 +34,5 @@ create table weapon_effect
     effect_value INT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+    UNIQUE(weapon_id, level, effect_type)
 );
